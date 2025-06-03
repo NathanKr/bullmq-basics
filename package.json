@@ -1,0 +1,22 @@
+{
+  "name": "bullmq-basics",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+     "dev:next": "cd next.js-app && npm run dev", 
+     "dev:worker": "cd worker && npm run dev",
+     "dev": "concurrently \"npm run dev:next\" \"npm run dev:worker\" --names \"NEXT,WORKER\" --prefix-colors \"green,blue\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NathanKr/bullmq-basics.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/NathanKr/bullmq-basics/issues"
+  },
+  "homepage": "https://github.com/NathanKr/bullmq-basics#readme"
+}
