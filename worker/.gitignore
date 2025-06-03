@@ -1,0 +1,94 @@
+# Node.js
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Directory for instrumented libs originally
+# created by istanbul
+coverage
+.nyc_output
+
+# Temporary files
+.tmp
+
+# Dependency directories
+node_modules/
+jspm_packages/ # For JSPM, if you use it
+
+# Optional npm cache directory
+.npm/
+
+# Optional REPL history
+.node_repl_history
+
+# Local development files
+.env
+.env.development.local
+.env.test.local
+.env.production.local
+.DS_Store # macOS specific
+Thumbs.db # Windows specific
+.vscode/ # VS Code settings (optional, sometimes useful to share)
+.idea/ # WebStorm/IntelliJ IDEA settings
+.eslintcache # ESLint cache
+.prettierignore # Prettier ignore file (if not in .gitignore)
+.prettierrc.js # Prettier config (sometimes helpful to ignore for specific projects)
+*.tgz # Tarballs created by npm pack
+
+# Build artifacts
+dist/
+build/
+out/
+
+# TypeScript
+*.tsbuildinfo
+
+# Next.js
+.next/
+
+# Nuxt.js
+.nuxt/
+.output/
+
+# Vuepress
+.vuepress/dist/
+
+# Electron
+release/
+build/
+*.asar
+
+# Test files
+*.spec.js
+*.test.js
+*.snap # Jest snapshot files
+
+# SvelteKit
+.svelte-kit/
+build/
+
+# Serverless Framework
+.serverless/
+
+# Yarn
+.yarn/*
+!.yarn/patches
+!.yarn/releases
+!.yarn/plugins
+!.yarn/sdks
+!.yarn/versions
+
+# Add your specific project files here
+# e.g.,
+# /my-secret-key.pem
+# /config/local.js
