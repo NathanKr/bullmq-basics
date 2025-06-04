@@ -13,3 +13,10 @@ export interface QueueInfo  {
   isQueueHealthy: boolean; // Simple indicator of whether counts could be retrieved
   error?: string; // Error message if retrieval failed
 }
+
+
+export enum QueueJobType{
+   SendEmail  = 'sendEmail',
+   ProcessImage = 'processImage',
+   GenerateReport = 'generateReport'
+}

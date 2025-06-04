@@ -1,7 +1,6 @@
 import { Worker, Job, JobData } from 'bullmq';
-import { GenerateReportPayload, ProcessImagePayload, SendEmailPayload } from '../types/types';
-import { FFMPEG_QUEUE } from "../../../common/src/logic/constants";
-import {QueueJobType} from "../../../common/src/types/types"
+import { GenerateReportPayload, ProcessImagePayload, QueueJobType, SendEmailPayload } from '../types/types';
+import { FFMPEG_QUEUE } from './constants';
 
 const queueName = FFMPEG_QUEUE;
 

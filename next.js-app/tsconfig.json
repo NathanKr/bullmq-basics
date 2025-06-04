@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    // "rootDirs": ["./src", "../common/src"], 
     "target": "ES2017",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,

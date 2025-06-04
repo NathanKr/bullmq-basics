@@ -21,3 +21,9 @@ export interface GenerateReportPayload {
 
 // Union type for all possible job data payloads
 export type JobData = SendEmailPayload | ProcessImagePayload | GenerateReportPayload;
+
+export enum QueueJobType{
+   SendEmail  = 'sendEmail',
+   ProcessImage = 'processImage',
+   GenerateReport = 'generateReport'
+}

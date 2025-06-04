@@ -1,7 +1,6 @@
-import { QueueInfo } from "@/types/types";
+import { QueueInfo, QueueJobType } from "@/types/types";
 import { Queue , JobsOptions   } from "bullmq";
-import { FFMPEG_QUEUE } from "../../../common/src/logic/constants";
-import { QueueJobType } from "../../../common/src/types/types";
+import { FFMPEG_QUEUE } from "./constants";
 
 if (!process.env.REDIS_HOST) {
   throw new Error(

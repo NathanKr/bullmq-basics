@@ -156,7 +156,7 @@ Module not found: Can't resolve '../../../common/src/logic/constants'
 
 <h2>Points of Interest</h2>
 <ul>
-    <li>...</li>
+    <li>currently some common code is duplicated in next.js-app and worker projects : FFMPEG_QUEUE , QueueJobType and also the connection info. I have tried to use common folder so each project will import from. This was working ok using worker via but not using next.js . seems that putting the shared code in a package and import it will solve this but it seem too complicated for this repo. This is probably the right solution for production repo</li>
    
 </ul>
 
