@@ -130,33 +130,12 @@ Three components
 <h2>Demo</h2>
 ....
 
-<h2>sharing common between worker and next.js-app</h2>
-altough i have used before rootsDir it seems that baseUrl and paths is better :
-
-This approach explicitly defines how to resolve imports from the common directory for each project. It's clean, effective for sharing types and utility functions, and avoids the "virtual merged root" semantics of rootDirs which are often overkill for simple code sharing.
-==========================> i got problems with it so i am using my
-<a href='https://www.youtube.com/watch?v=BhWFy7orx-M'>video</a> which suggest using rootDirs but seems it is working without so i have remark it
-
-<h2>open issues</h2>
-<ul>
-    <li>i get build error :connect ECONNREFUSED 127.0.0.1:6379
-    at <unknown> (Error: connect ECONNREFUSED 127.0.0.1:6379) {
-  errno: -4078,
-  code: 'ECONNREFUSED',
-  syscall: 'connect',
-  address: '127.0.0.1',
-  port: 6379
-}</li>
-<li>compile is clean but num run dev - i get error when i access the page : Build Error
-Module not found: Can't resolve '../../../common/src/logic/constants'
-./src/logic/queue-utils.ts (3:1). but no problem for npm start</li>
-   
-</ul>
 
 
 <h2>Points of Interest</h2>
 <ul>
     <li>currently some common code is duplicated in next.js-app and worker projects : FFMPEG_QUEUE , QueueJobType and also the connection info. I have tried to use common folder so each project will import from. This was working ok using worker via but not using next.js . seems that putting the shared code in a package and import it will solve this but it seem too complicated for this repo. This is probably the right solution for production repo</li>
+    <li>when you get error : connect ECONNREFUSED 127.0.0.1:6379 its because the redis server is not running. doing sudo systemctl status redis fix it</li>
    
 </ul>
 
