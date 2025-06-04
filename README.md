@@ -94,7 +94,7 @@ REDIS_TLS_ENABLED=false
 ```
 
 <h2>Usage</h2>
-....
+use the scripts in the repo root
 
 
 <h2>Technologies Used</h2>

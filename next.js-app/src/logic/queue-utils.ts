@@ -1,5 +1,8 @@
-import { QueueInfo, QueueJobType } from "@/types/types";
-import { Queue , JobsOptions   } from "bullmq";
+import {
+  QueueInfo,
+  QueueJobType,
+} from "@/types/types";
+import { Queue, JobsOptions } from "bullmq";
 import { FFMPEG_QUEUE } from "./constants";
 
 if (!process.env.REDIS_HOST) {
@@ -21,7 +24,7 @@ if (isNaN(redisPort)) {
   );
 }
 
-// --- todo nath share this ???????????
+// --- todo nath share this in common
 const connectionOptions = {
   host: process.env.REDIS_HOST,
   port: parseInt(process.env.REDIS_PORT, 10),
@@ -57,7 +60,7 @@ export async function getQueueInfo(): Promise<QueueInfo> {
 export async function addTask(
   jobName: QueueJobType,
   data: any,
-  options?: JobsOptions  // Use BullMQ's JobsOptions  type
+  options?: JobsOptions // Use BullMQ's JobsOptions  type
 ): Promise<{ jobId: string; jobName: string }> {
   try {
     const job = await myQueue.add(jobName, data, options);
@@ -73,3 +76,5 @@ export async function addTask(
     throw new Error(`Failed to add job '${jobName}': ${errorMessage}`);
   }
 }
+
+
