@@ -1,15 +1,13 @@
 import { Worker, Job, JobData } from 'bullmq';
 import { GenerateReportPayload, ProcessImagePayload, SendEmailPayload } from '../types/types';
-import {IXXX} from '../../../common/src/types/types'
+import { FFMPEG_QUEUE } from "../../../common/src/logic/constants";
+import {QueueJobType} from "../../../common/src/types/types"
 
-
-const xxx : IXXX = {
-  num: 0
-}
+const queueName = FFMPEG_QUEUE;
 
 // Define the processor function type for clarity, though BullMQ infers it well
 // The 'job' parameter is typed as Job<JobData> to ensure type safety when accessing job.data
-const myWorker = new Worker<JobData>('myQueueName', async (job: Job<JobData>) => {
+const myWorker = new Worker<JobData>(queueName, async (job: Job<JobData>) => {
   // This is your processor function
   // The 'job' object contains all the information about the task
   console.log(`Processing job ${job.id} with name: ${job.name}`);
@@ -23,13 +21,13 @@ const myWorker = new Worker<JobData>('myQueueName', async (job: Job<JobData>) =>
   // Now, based on the job.name and/or the taskPayload,
   // you execute the appropriate code.
 
-  if (job.name === 'sendEmail') {
+  if (job.name === QueueJobType.SendEmail) {
     const emailPayload = taskPayload as unknown as SendEmailPayload;
     await sendEmail(emailPayload.to, emailPayload.subject, emailPayload.body);
-  } else if (job.name === 'processImage') {
+  } else if (job.name === QueueJobType.ProcessImage) {
     const imagePayload = taskPayload as unknown as ProcessImagePayload;
     await processImage(imagePayload.imageUrl, imagePayload.filters);
-  } else if (job.name === 'generateReport') {
+  } else if (job.name === QueueJobType.GenerateReport) {
     const reportPayload = taskPayload as unknown as GenerateReportPayload;
     await generateReport(reportPayload.reportId, reportPayload.parameters);
   } else {

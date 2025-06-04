@@ -1,3 +1,7 @@
-export interface IXXX{
-    num : number;
-} 
+
+
+export enum QueueJobType{
+   SendEmail  = 'sendEmail',
+   ProcessImage = 'processImage',
+   GenerateReport = 'generateReport'
+}

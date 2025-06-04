@@ -4,10 +4,13 @@
   "description": "bullmq-basics",
   "main": "index.js",
   "scripts": {
+    "start:next": "cd next.js-app && npm start",
+    "start:worker": "cd worker && npm start",
+    "start": "npm run build && concurrently \"npm run start:next\" \"npm run start:worker\" --names \"NEXT,WORKER\" --prefix-colors \"green,blue\"",
     "build:next": "cd next.js-app && npm run build",
     "build:worker": "cd worker && npm run build",
     "build": "concurrently \"npm run build:next\" \"npm run build:worker\" --names \"NEXT,WORKER\" --prefix-colors \"green,blue\"",
-    "dev:next": "cd next.js-app && npm run dev", 
+    "dev:next": "cd next.js-app && npm run dev",
     "dev:worker": "cd worker && npm run dev",
     "dev": "concurrently \"npm run dev:next\" \"npm run dev:worker\" --names \"NEXT,WORKER\" --prefix-colors \"green,blue\""
   },

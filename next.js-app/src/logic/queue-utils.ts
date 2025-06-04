@@ -1,6 +1,7 @@
 import { QueueInfo } from "@/types/types";
 import { Queue , JobsOptions   } from "bullmq";
-import { FFMPEG_QUEUE } from "./constants";
+import { FFMPEG_QUEUE } from "../../../common/src/logic/constants";
+import { QueueJobType } from "../../../common/src/types/types";
 
 if (!process.env.REDIS_HOST) {
   throw new Error(
@@ -21,6 +22,7 @@ if (isNaN(redisPort)) {
   );
 }
 
+// --- todo nath share this ???????????
 const connectionOptions = {
   host: process.env.REDIS_HOST,
   port: parseInt(process.env.REDIS_PORT, 10),
@@ -54,7 +56,7 @@ export async function getQueueInfo(): Promise<QueueInfo> {
 }
 
 export async function addTask(
-  jobName: string,
+  jobName: QueueJobType,
   data: any,
   options?: JobsOptions  // Use BullMQ's JobsOptions  type
 ): Promise<{ jobId: string; jobName: string }> {
