@@ -135,7 +135,7 @@ This approach explicitly defines how to resolve imports from the common director
 ==========================> i got problems with it so i am using my
 <a href='https://www.youtube.com/watch?v=BhWFy7orx-M'>video</a> which suggest using rootDirs but seems it is working without so i have remark it
 
-<h2>open issue</h2>
+<h2>open issues</h2>
 <ul>
     <li>i get build error :connect ECONNREFUSED 127.0.0.1:6379
     at <unknown> (Error: connect ECONNREFUSED 127.0.0.1:6379) {
@@ -145,6 +145,9 @@ This approach explicitly defines how to resolve imports from the common director
   address: '127.0.0.1',
   port: 6379
 }</li>
+<li>compile is clean but num run dev - i get error when i access the page : Build Error
+Module not found: Can't resolve '../../../common/src/logic/constants'
+./src/logic/queue-utils.ts (3:1). but no problem for npm start</li>
    
 </ul>
 

@@ -41,6 +41,7 @@ const myWorker = new Worker<JobData>(queueName, async (job: Job<JobData>) => {
   // The return type of the processor function is inferred, but can also be explicitly typed
   return { status: 'success', message: 'Job completed!' };
 }, {
+  // --- todo nath share this - it appear also in the producer
   connection: {
     host: 'localhost', // Your Redis host
     port: 6379,       // Your Redis port
