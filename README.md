@@ -65,6 +65,8 @@ sudo systemctl status redis
 The result is shown here
 <img src='./figs/redis-status.png'/>
 
+<h4>important note about redis on wsl</h4>
+if you close your WSL terminal, the Redis server running inside that WSL distribution will stop unless you've configured it to run as a background service that persists beyond terminal closure.
 
 <h4>env variables</h4>
 The IP address or hostname of your Redis server. For local development, this is often 127.0.0.1 (localhost).
