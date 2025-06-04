@@ -1,12 +1,15 @@
 {
   "name": "bullmq-basics",
   "version": "1.0.0",
-  "description": "",
+  "description": "bullmq-basics",
   "main": "index.js",
   "scripts": {
-     "dev:next": "cd next.js-app && npm run dev", 
-     "dev:worker": "cd worker && npm run dev",
-     "dev": "concurrently \"npm run dev:next\" \"npm run dev:worker\" --names \"NEXT,WORKER\" --prefix-colors \"green,blue\""
+    "build:next": "cd next.js-app && npm run build",
+    "build:worker": "cd worker && npm run build",
+    "build": "concurrently \"npm run build:next\" \"npm run build:worker\" --names \"NEXT,WORKER\" --prefix-colors \"green,blue\"",
+    "dev:next": "cd next.js-app && npm run dev", 
+    "dev:worker": "cd worker && npm run dev",
+    "dev": "concurrently \"npm run dev:next\" \"npm run dev:worker\" --names \"NEXT,WORKER\" --prefix-colors \"green,blue\""
   },
   "repository": {
     "type": "git",

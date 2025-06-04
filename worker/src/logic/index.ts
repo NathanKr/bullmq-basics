@@ -1,6 +1,11 @@
 import { Worker, Job, JobData } from 'bullmq';
 import { GenerateReportPayload, ProcessImagePayload, SendEmailPayload } from '../types/types';
+import {IXXX} from '../../../common/src/types/types'
 
+
+const xxx : IXXX = {
+  num: 0
+}
 
 // Define the processor function type for clarity, though BullMQ infers it well
 // The 'job' parameter is typed as Job<JobData> to ensure type safety when accessing job.data

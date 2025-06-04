@@ -128,6 +128,27 @@ Three components
 <h2>Demo</h2>
 ....
 
+<h2>sharing common between worker and next.js-app</h2>
+altough i have used before rootsDir it seems that baseUrl and paths is better :
+
+This approach explicitly defines how to resolve imports from the common directory for each project. It's clean, effective for sharing types and utility functions, and avoids the "virtual merged root" semantics of rootDirs which are often overkill for simple code sharing.
+==========================> i got problems with it so i am using my
+<a href='https://www.youtube.com/watch?v=BhWFy7orx-M'>video</a> which suggest using rootDirs but seems it is working without so i have remark it
+
+<h2>open issue</h2>
+<ul>
+    <li>i get build error :connect ECONNREFUSED 127.0.0.1:6379
+    at <unknown> (Error: connect ECONNREFUSED 127.0.0.1:6379) {
+  errno: -4078,
+  code: 'ECONNREFUSED',
+  syscall: 'connect',
+  address: '127.0.0.1',
+  port: 6379
+}</li>
+   
+</ul>
+
+
 <h2>Points of Interest</h2>
 <ul>
     <li>...</li>
