@@ -25,7 +25,6 @@
   display: block;
   font-size: 0.875rem; /* text-sm */
   font-weight: 500; /* font-medium */
-  color: #374151; /* text-gray-700 */
   margin-bottom: 0.25rem; /* mb-1 */
 }
 
@@ -103,5 +102,5 @@
   padding: 1rem; /* p-4 */
   border: 1px solid #bfdbfe; /* border border-blue-200 */
   border-radius: 0.375rem; /* rounded-md */
-  background-color: #eff6ff; /* bg-blue-50 */
+  
 }

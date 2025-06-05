@@ -15,6 +15,7 @@ export default function JobStatusPoller({ jobId }: { jobId: string }) {
     queryKey: [REACT_QUERY_KEY_JOB_STATUS, jobId],
     queryFn: async () => {
       const result = await getJobStatusWithAction(jobId);
+      console.log(result)
 
       if (
         result &&
