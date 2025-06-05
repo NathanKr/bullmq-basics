@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@tanstack/react-query": "^5.80.5",
     "bullmq": "^5.53.2",
     "next": "15.3.3",
     "react": "^19.0.0",

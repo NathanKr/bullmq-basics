@@ -123,7 +123,7 @@ REDIS_TLS_ENABLED=false
 ```
 
 <h2>Usage</h2>
-use the scripts in the repo root
+use the scripts in the repo root to build and run the web server and worker
 
 <h3>Bullmq important operations</h3>
 
@@ -151,9 +151,11 @@ use the scripts in the repo root
 
 
 <h2>Technologies Used</h2>
-bullmq (redis)
-next.js
-node.js
+<ul>
+  <li>BullMQ (Redis)</li>
+  <li>Next.js</li>
+  <li>Node.js</li>
+</ul>
 
 
 <h2>Architecture</h2>
@@ -200,7 +202,7 @@ Three components
    You can investigate this by using winston logger by the workers and possibly write also the worker id
    </li>
    <li>using npm start i am able to add task and process by worker but it is not updated in jobs status i.e. not completed \ failed even when i refresh the page ===> the problem was the QueueStatus component which is server component thus render once even if the page is re-render. to fix this i added export const dynamic = 'force-dynamic';
-in the hosting page. This directive tell not to use output server component cache and re-render it thus frwsh info is used</li>
+   in the hosting page. This directive tell not to use output server component cache and re-render it thus frwsh info is used</li>
 </ul>
 
 <h2>References</h2>

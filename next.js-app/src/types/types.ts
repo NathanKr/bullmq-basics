@@ -1,8 +1,7 @@
-
 /**
  * Interface for the queue status object returned by getQueueCounts.
  */
-export interface QueueInfo  {
+export interface QueueInfo {
   queueName: string;
   waiting: number; // Jobs waiting to be processed
   active: number; // Jobs currently being processed by a worker
@@ -14,11 +13,10 @@ export interface QueueInfo  {
   error?: string; // Error message if retrieval failed
 }
 
-
-export enum QueueJobType{
-   SendEmail  = 'sendEmail',
-   ProcessImage = 'processImage',
-   GenerateReport = 'generateReport'
+export enum QueueJobType {
+  SendEmail = "sendEmail",
+  ProcessImage = "processImage",
+  GenerateReport = "generateReport",
 }
 
 // Define interfaces for the different job payloads
@@ -42,6 +40,26 @@ export interface GenerateReportPayload {
   };
 }
 
-
 // Union type for all possible job data payloads
-export type JobData = SendEmailPayload | ProcessImagePayload | GenerateReportPayload;
+export type JobData =
+  | SendEmailPayload
+  | ProcessImagePayload
+  | GenerateReportPayload;
+
+export interface JobStatus {
+  jobId: string;
+  status:
+    | "active"
+    | "completed"
+    | "failed"
+    | "waiting"
+    | "delayed"
+    | "stuck"
+    | "paused"
+    | "not-found"
+    | "error";
+  result?: any; // You might want to make this more specific later
+  failedReason?: string;
+  progress?: number;
+  error?: string; // For explicit error returns from the action
+}

@@ -8,7 +8,7 @@ import {
   QueueJobType,
   SendEmailPayload,
 } from "@/types/types"; // Adjust path if necessary
-import { addTaskAction } from "@/actions/actions"; // Adjust path if necessary
+import { addTaskWithAction } from "@/actions/actions"; // Adjust path if necessary
 import { JobsOptions } from "bullmq";
 
 // Import the CSS Module
@@ -61,7 +61,7 @@ const AddTask: FC = () => {
     }
 
     try {
-      const { jobId, jobName } = await addTaskAction(
+      const { jobId, jobName } = await addTaskWithAction(
         selectedJobType,
         parsedData,
         parsedOptions
@@ -137,11 +137,7 @@ const AddTask: FC = () => {
         </div>
 
         <div className={styles.buttonContainer}>
-          <button
-            type="submit"
-            disabled={loading}
-            className={styles.button}
-          >
+          <button type="submit" disabled={loading} className={styles.button}>
             {loading && <div className={styles.spinner}></div>}
             {loading ? "Adding Task..." : "Add Task to Queue"}
           </button>
