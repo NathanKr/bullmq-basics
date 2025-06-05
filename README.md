@@ -57,12 +57,41 @@ sudo systemctl start redis-server
 </div>
 
 <h4>Test redis status</h4>
+The following is the most direct and recommended method.
+This command attempts to connect to the Redis server and sends a PING command. It's the most reliable way to know if Redis is actually listening and responding.
+
+```bash
+ redis-cli ping
+```
+If Redis is running: You'll see PONG
+If Redis is not running or unreachable: You'll see an error like Could not connect to Redis at 127.0.0.1:6379: Connection refused or similar.
+
+Checking Service Status (Ubuntu 16.04+ using systemd):
+Modern Ubuntu versions (16.04 and later, which WSL often uses) use systemd for managing services. This command gives you detailed information about the redis-server service.
 
 ```bash
 sudo systemctl status redis
 ```
 
-The result is shown here
+Interpreting `sudo systemctl status redis-server` Output:
+
+<ul>
+    <li>
+        <strong>If Redis is running:</strong>
+        Look for <code>Active: active (running)</code> in the output. You'll also typically see the process ID (PID), memory usage, and other details.
+    </li>
+    <li>
+        <strong>If Redis is not running:</strong>
+        You'll likely see <code>Active: inactive (dead)</code> or <code>Active: failed</code>.
+    </li>
+    <li>
+        <strong>If you get an error like:</strong>
+        <code>System has not been booted with systemd as init system (PID 1). Can't operate.</code>
+        This indicates that your WSL instance is not running a full `systemd` init. In this scenario, you should typically use the older `sudo service redis-server status` command instead.
+    </li>
+</ul>
+
+The result i got is shown here
 <img src='./figs/redis-status.png'/>
 
 <h4>important note about redis on wsl</h4>
@@ -95,6 +124,30 @@ REDIS_TLS_ENABLED=false
 
 <h2>Usage</h2>
 use the scripts in the repo root
+
+<h3>Bullmq important operations</h3>
+
+<h4>Start the Redis server</h4>
+<p>Ensure your Redis instance is running and accessible.</p>
+
+<h4>Start worker</h4>
+<p>Launch your worker process(es) that will consume tasks from the queue.</p>
+
+<h4>Add task to queue</h4>
+<p>Enqueue new tasks from your application for workers to process.</p>
+
+<h4>Task mark complete (success / failure)</h4>
+<p>Tasks are automatically marked as completed (successfully or with failure) by the queue system after processing.</p>
+<p>BullMQ workers determine job completion based on the outcome of the job's processing function:</p>
+<ul>
+    <li><strong>Success:</strong> If the worker's processing function returns a value or a resolved promise without throwing any errors.</li>
+    <li><strong>Failure:</strong> If the worker's processing function throws an unhandled error or returns a rejected promise.</li>
+</ul>
+<p>Once the outcome is determined, BullMQ updates the job's status in Redis (to <code>completed</code> or <code>failed</code>) and emits corresponding events for your application to react to.</p>
+
+
+<h4>Get queue info</h4>
+<p>Monitor the state of your queue, including pending, active, and failed tasks, to ensure smooth operation.</p>
 
 
 <h2>Technologies Used</h2>
@@ -131,6 +184,10 @@ Three components
 ....
 
 
+<h2>open issues</h2>
+<ul>
+    <li>many task appears as completd but i do not see them reaching the worker</li>
+</ul>
 
 <h2>Points of Interest</h2>
 <ul>
