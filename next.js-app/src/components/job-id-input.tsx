@@ -1,7 +1,15 @@
-'use client'
+'use client';
 
-import  { useId, useState } from 'react';
-import styles from '@/styles/job-id-input.module.css'; // Import the CSS Module
+import { useId, useState } from 'react';
+import {
+  Box,
+  Button,
+  TextField,
+  Typography,
+  Paper,
+  Stack
+} from '@mui/material';
+import styles from '@/styles/job-id-input.module.css'; // Adjust path if needed
 import JobStatusPoller from './job-status-poller';
 
 export default function JobIdInput() {
@@ -22,46 +30,51 @@ export default function JobIdInput() {
   };
 
   return (
-    <div className={styles.container}>
-      <h1 className={styles.heading}>Track Job Status</h1>
+    <Paper elevation={3} className={styles.customContainer}>
+      <Typography variant="h5" component="h1" align="center" sx={{ mb: 3 }}>
+        Track Job Status
+      </Typography>
 
-      <form onSubmit={handleSubmit} className={styles.form}>
-        <div>
-          <label htmlFor={inputId} className={styles.label}>
-            Enter Job ID:
-          </label>
-          <input
-            type="text"
-            id={inputId}
-            value={jobIdInput}
-            onChange={(e) => setJobIdInput(e.target.value)}
-            placeholder="e.g., bullmq-job-123"
-            className={styles.input}
-          />
-        </div>
-        <div className={styles.buttonGroup}>
-          <button
+      <Box component="form" onSubmit={handleSubmit} sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+        <TextField
+          id={inputId}
+          label="Enter Job ID"
+          variant="outlined"
+          fullWidth
+          value={jobIdInput}
+          onChange={(e) => setJobIdInput(e.target.value)}
+          placeholder="e.g., bullmq-job-123"
+          size="small"
+        />
+
+        <Stack direction="row" spacing={2} justifyContent="center" sx={{ mt: 2 }}>
+          <Button
             type="submit"
-            className={styles.primaryButton}
+            variant="contained"
+            color="primary"
+            disabled={!jobIdInput.trim()}
           >
             Track Job
-          </button>
-          <button
+          </Button>
+          <Button
             type="button"
             onClick={handleClear}
-            className={styles.secondaryButton}
+            variant="outlined"
+            color="secondary"
           >
             Clear
-          </button>
-        </div>
-      </form>
+          </Button>
+        </Stack>
+      </Box>
 
       {submittedJobId && (
-        <div className={styles.pollerWrapper}>
+        <Paper
+          elevation={1}
+          className={styles.pollerWrapper} // <-- Apply the CSS Module class here
+        >
           <JobStatusPoller jobId={submittedJobId} />
-        </div>
+        </Paper>
       )}
-    </div>
+    </Paper>
   );
 }
-
