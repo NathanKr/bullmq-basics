@@ -123,7 +123,7 @@ REDIS_TLS_ENABLED=false
 ```
 
 <h2>Usage</h2>
-use the scripts in the repo root to build and run the web server and worker
+use the scripts in the repo root package.json to build and run the web server and worker in one go from the repo folder via the package concurrently. this make your developer experience much smotther
 
 <h3>Bullmq important operations</h3>
 
@@ -155,6 +155,7 @@ use the scripts in the repo root to build and run the web server and worker
   <li>BullMQ (Redis)</li>
   <li>Next.js</li>
   <li>Node.js</li>
+  <li>Concurrently</li>
 </ul>
 
 
