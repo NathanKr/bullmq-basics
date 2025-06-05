@@ -1,7 +1,10 @@
 import { getQueueInfo } from "@/logic/queue-utils";
 
+
 export default async function QueueStatus() {
   const queueInfo = await getQueueInfo();
+
+ 
   const elemInfo = queueInfo.isQueueHealthy ? (
     <div>
       <p>

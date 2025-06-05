@@ -186,14 +186,21 @@ Three components
 
 <h2>open issues</h2>
 <ul>
-    <li>many task appears as completd but i do not see them reaching the worker</li>
+    <li>...</li>
 </ul>
 
 <h2>Points of Interest</h2>
 <ul>
     <li>currently some common code is duplicated in next.js-app and worker projects : FFMPEG_QUEUE , QueueJobType and also the connection info. I have tried to use common folder so each project will import from. This was working ok using worker via but not using next.js . seems that putting the shared code in a package and import it will solve this but it seem too complicated for this repo. This is probably the right solution for production repo</li>
     <li>when you get error : connect ECONNREFUSED 127.0.0.1:6379 its because the redis server is not running. doing sudo systemctl status redis fix it</li>
+   <li>many task appears as completd but i do not see them reaching the worker - no console.log  : it seems that bullmq is spawning more worker on top of the first because altough all tasks a remarked as completed or failed not all of them appear in the console as shown in this image (job id 27,28 are added to the queue but the first worker does not process them. he does process job id 26)
+
+   <img src='./figs/few-workers.png'/>
    
+   You can investigate this by using winston logger by the workers and possibly write also the worker id
+   </li>
+   <li>using npm start i am able to add task and process by worker but it is not updated in jobs status i.e. not completed \ failed even when i refresh the page ===> the problem was the QueueStatus component which is server component thus render once even if the page is re-render. to fix this i added export const dynamic = 'force-dynamic';
+in the hosting page. This directive tell not to use output server component cache and re-render it thus frwsh info is used</li>
 </ul>
 
 <h2>References</h2>
