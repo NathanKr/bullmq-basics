@@ -1,10 +1,13 @@
 "use client";
 
 import { getJobStatusWithAction } from "@/actions/actions";
-import { JOB_STATUS_POLL_SEC, REACT_QUERY_KEY_JOB_STATUS } from "@/logic/constants";
+import {
+  JOB_STATUS_POLL_SEC,
+  REACT_QUERY_KEY_JOB_STATUS,
+} from "@/logic/constants";
 import { JobStatus } from "@/types/types"; // Make sure your JobStatus type is correctly defined here
+import { Alert, Box, CircularProgress, Typography } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
-import React from "react";
 
 export default function JobStatusPoller({ jobId }: { jobId: string }) {
   // Define all states where polling should stop AND the "Polling for updates..." message should NOT be shown.
@@ -15,7 +18,7 @@ export default function JobStatusPoller({ jobId }: { jobId: string }) {
     queryKey: [REACT_QUERY_KEY_JOB_STATUS, jobId],
     queryFn: async () => {
       const result = await getJobStatusWithAction(jobId);
-      console.log(result)
+      console.log(result);
 
       if (
         result &&
@@ -39,62 +42,109 @@ export default function JobStatusPoller({ jobId }: { jobId: string }) {
     staleTime: 1000,*/
   });
 
-  if (isLoading) return <div>Checking job status for ID: {jobId}...</div>;
+  if (isLoading) {
+    return (
+      <Box sx={{ display: "flex", alignItems: "center", gap: 1, p: 2 }}>
+        <CircularProgress size={20} />
+        <Typography variant="body1">
+          Checking job status for ID: {jobId}...
+        </Typography>
+      </Box>
+    );
+  }
 
-  if (isError)
-    return <div style={{ color: "red" }}>Error: {error?.message}</div>;
+  if (isError) {
+    return (
+      <Alert severity="error" sx={{ my: 2 }}>
+        {/* Added vertical margin for spacing */}
+        Error: {error?.message}
+      </Alert>
+    );
+  }
 
-  // Handle the 'not-found' state. If we return here, the code below won't execute for this status.
-  if (!data || data.status === "not-found")
-    return <div>Job with ID {jobId} not found or not yet started.</div>;
+  if (!data || data.status === "not-found") {
+    return (
+      <Typography variant="body1" sx={{ my: 2 }}>
+        Job with ID {jobId} not found or not yet started.
+      </Typography>
+    );
+  }
 
   // At this point in the code, `data` is guaranteed to exist and `data.status` is NOT "not-found".
   // It also won't be "isLoading" or "isError".
 
   return (
-    <div>
-      <h2>Job Status for ID: {data.jobId}</h2> {/* No '?' needed on data.jobId here */}
-      <p>
-        <strong>Status:</strong>{" "}
-        <span
-          style={{
-            fontWeight: "bold",
-            color:
-              data.status === "completed" // No '?' needed on data.status here
-                ? "green"
-                : data.status === "failed"
-                ? "red"
-                : data.status === "active"
-                ? "blue"
-                : "orange",
-          }}
+    <Box
+      sx={{
+        p: 2, // Added padding to the container for better spacing
+        border: "1px solid",
+        borderColor: "divider", // Uses theme's divider color for border
+        borderRadius: 1, // Rounded corners
+        bgcolor: "background.paper", // Uses theme's paper background color
+      }}
+    >
+      <Typography variant="h6" component="h2" sx={{ mb: 1.5 }}>
+        Job Status for ID: {data.jobId}
+      </Typography>
+
+      <Typography variant="body1" sx={{ mb: 0.5 }}>
+        <Box component="span" sx={{ fontWeight: "bold" }}>
+          Status:
+        </Box>{" "}
+        <Box
+          component="span"
+          sx={{ fontWeight: "bold", color: getStatusColor(data.status) }}
         >
           {data.status}
-        </span>
-      </p>
+        </Box>
+      </Typography>
+
       {data.progress !== undefined && (
-        <p>
-          <strong>Progress:</strong> {data.progress}%
-        </p>
+        <Typography variant="body1" sx={{ mb: 0.5 }}>
+          <Box component="span" sx={{ fontWeight: "bold" }}>
+            Progress:
+          </Box>{" "}
+          {data.progress}%
+        </Typography>
       )}
       {data.status === "completed" && data.result && (
-        <p>
-          <strong>Result:</strong> {JSON.stringify(data.result)}
-        </p>
+        <Typography variant="body1" sx={{ mb: 0.5 }}>
+          <Box component="span" sx={{ fontWeight: "bold" }}>
+            Result:
+          </Box>{" "}
+          {JSON.stringify(data.result)}
+        </Typography>
       )}
       {data.status === "failed" && data.failedReason && (
-        <p style={{ color: "red" }}>
-          <strong>Failure Reason:</strong> {data.failedReason}
-        </p>
+        <Typography variant="body1" sx={{ color: "error.main", mb: 0.5 }}>
+          <Box component="span" sx={{ fontWeight: "bold" }}>
+            Failure Reason:
+          </Box>{" "}
+          {data.failedReason}
+        </Typography>
       )}
-      {/*
-        Now, check if the current data.status is NOT one of the final polling states.
-        This correctly shows the polling message for "active", "waiting", etc.
-        And because of earlier `if` statements, we know it's not 'isLoading', 'isError', or 'not-found'.
-      */}
       {!finalPollingStates.includes(data.status) && (
-        <p>Polling for updates...</p>
+        <Box sx={{ display: "flex", alignItems: "center", gap: 1, mt: 1 }}>
+          <CircularProgress size={16} />
+          <Typography variant="body2">Polling for updates...</Typography>
+        </Box>
       )}
-    </div>
+    </Box>
   );
 }
+
+// Helper function to get a theme-aware color based on job status
+const getStatusColor = (status: string) => {
+  switch (status) {
+    case "completed":
+      return "success.main"; // Uses the main color from the theme's success palette
+    case "failed":
+      return "error.main"; // Uses the main color from the theme's error palette
+    case "active":
+      return "info.main"; // Uses the main color from the theme's info palette (often a blue)
+    case "waiting":
+      return "warning.main"; // Uses the main color from the theme's warning palette (often an orange)
+    default:
+      return "text.primary"; // Default text color from the theme
+  }
+};
