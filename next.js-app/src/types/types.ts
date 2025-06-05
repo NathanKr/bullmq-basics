@@ -1,3 +1,5 @@
+import { JobState } from "bullmq";
+
 /**
  * Interface for the queue status object returned by getQueueCounts.
  */
@@ -9,8 +11,6 @@ export interface QueueInfo {
   failed: number; // Jobs that failed to complete
   completed: number; // Jobs that completed successfully
   totalQueueLength: number; // Sum of waiting, active, and delayed jobs
-  isQueueHealthy: boolean; // Simple indicator of whether counts could be retrieved
-  error?: string; // Error message if retrieval failed
 }
 
 export enum QueueJobType {
@@ -48,16 +48,7 @@ export type JobData =
 
 export interface JobStatus {
   jobId: string;
-  status:
-    | "active"
-    | "completed"
-    | "failed"
-    | "waiting"
-    | "delayed"
-    | "stuck"
-    | "paused"
-    | "not-found"
-    | "error";
+  status: JobState | "not-found" | "error";
   result?: any; // You might want to make this more specific later
   failedReason?: string;
   progress?: number;

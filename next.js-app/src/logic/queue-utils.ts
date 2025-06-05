@@ -21,7 +21,6 @@ if (isNaN(redisPort)) {
   );
 }
 
-// --- todo nath share this in common
 const connectionOptions = {
   host: process.env.REDIS_HOST,
   port: parseInt(process.env.REDIS_PORT, 10),
@@ -50,7 +49,6 @@ export async function getQueueInfo(): Promise<QueueInfo> {
     failed: failedCount,
     completed: completedCount,
     totalQueueLength: totalQueueLength,
-    isQueueHealthy: true,
   };
 }
 

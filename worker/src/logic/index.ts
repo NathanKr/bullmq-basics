@@ -54,7 +54,6 @@ const myWorker = new Worker<JobData>(
     return { status: "success", message: "Job completed!" };
   },
   {
-    // --- todo nath share this - it appear also in the producer
     connection: {
       host: REDIS_HOST,
       port: REDIS_PORT, 
@@ -83,15 +82,15 @@ myWorker.on("error", (err: Error) => {
   console.error("Worker error:", err);
 });
 
-// --- Graceful Shutdown ---
-const shutdown = async () => {
-  console.log("Shutting down worker...");
-  await myWorker.close(); // Tells the worker to stop accepting new jobs and finish current ones
-  console.log("Worker closed. Exiting process.");
-  process.exit(0); // Exit cleanly
-};
+// // --- Graceful Shutdown --- todo nath ===>how important is this
+// const shutdown = async () => {
+//   console.log("Shutting down worker...");
+//   await myWorker.close(); // Tells the worker to stop accepting new jobs and finish current ones
+//   console.log("Worker closed. Exiting process.");
+//   process.exit(0); // Exit cleanly
+// };
 
-// Listen for termination signals
-process.on("SIGTERM", shutdown); // For systemd, Kubernetes, etc.
-process.on("SIGINT", shutdown); // For Ctrl+C
-process.on("SIGHUP", shutdown); // For terminal hangup
+// // Listen for termination signals
+// process.on("SIGTERM", shutdown); // For systemd, Kubernetes, etc.
+// process.on("SIGINT", shutdown); // For Ctrl+C
+// process.on("SIGHUP", shutdown); // For terminal hangup
