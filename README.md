@@ -16,13 +16,13 @@ BullMQ is a popular message queue library for Node.js applications.
 This challenge came up in my new SaaS project, Post2Video — where we generate videos using FFmpeg from blog and readme content
 
 <h2>Installation</h2>
-Install dependency packages using
+Install dependency packages using:
 
 ```bash
  pnpm i
  ```
 
-<h3>redis on wsl</h3>
+<h3>Redis on wsl</h3>
 
 <p>This is by far the <strong>most recommended way</strong> to run Redis (and many other Linux-based tools) on Windows for development. WSL 2 provides a full Linux kernel and environment, offering excellent performance and compatibility.</p>
 
@@ -108,14 +108,18 @@ The result i got is shown here
 If you close your WSL terminal, the Redis server running inside that WSL distribution will stop unless you've configured it to run as a background service that persists beyond terminal closure.
 
 <h4>env variables</h4>
-The IP address or hostname of your Redis server. For local development, this is often 127.0.0.1 (localhost).
+The IP address or hostname of your Redis server. For local development, and often for production deployments where Redis, the web server, and worker processes run on the same machine, this is typically <code>127.0.0.1</code> (localhost).
+
 
 ```bash
 REDIS_HOST=127.0.0.1
 ```
 
 The port number your Redis server is listening on. The default Redis port is 6379.
+
+```bash
 REDIS_PORT=6379       
+```
 
 This variable is needed ONLY if your Redis server requires a password for authentication.
 For a default, minimal local Redis setup, there's usually no password, so you can omit this line entirely.
@@ -183,7 +187,7 @@ Simply invoke the index file under worker/src/logic
 <h4>Add task to queue</h4>
 <p>Enqueue new tasks from your application for workers to process.</p>
 
-call addTask function
+Call addTask function
 
 ```ts
  enum QueueJobType {
@@ -211,7 +215,7 @@ function addTask(
 <h4>get Task status</h4>
 
 
-call getJobStatus
+Call getJobStatus
 
 ```ts
 function getJobStatus(jobId: string): Promise<JobStatus> 
@@ -220,7 +224,7 @@ function getJobStatus(jobId: string): Promise<JobStatus>
 <h4>Get queue info</h4>
 <p>Monitor the state of your queue, including pending, active, and failed tasks, to ensure smooth operation.</p>
 
-call getQueueInfo
+Call getQueueInfo
 
 ```ts
 function getQueueInfo(): Promise<QueueInfo> 
@@ -257,10 +261,7 @@ The schema appears in this image
 </ul>
 
 
-For most standard polling scenarios, especially when you have good control over the polling interval and termination,  React Query (TanStack Query) is highly recommend. It offers a fantastic developer experience, handles many common pitfalls, and provides powerful features for managing server state. It's an industry standard for a reason.
-
-<h3>How to get complete and progress</h3>
-
+For most standard polling scenarios, especially when you have good control over the polling interval and termination,  React Query (TanStack Query) is highly recommended. It offers a fantastic developer experience, handles many common pitfalls, and provides powerful features for managing server state. It's an industry standard for a reason.
 
 
 <h2>Code Structure</h2>
@@ -356,34 +357,34 @@ function getQueueInfo(): Promise<QueueInfo> {
 
 <h2>Demo</h2>
 
-Home page is shown in the following image
+The home page is shown in the following image
 <img alt="Home page of the application" src="./figs/home-page.png"/>
 
-Click on add task button will add task to the queue , notice the job id - 48
+Clicking on the "Add Task" button will add a task to the queue; notice job ID 48
 
 <img alt="Screenshot showing adding a task to the queue, with job ID 48" src="./figs/send-mail-add-task.png"/>
 
-Given the created job id 48 - use it to track the job status
+Given the created job ID 48, use it to track the job status
 
 <img alt="Screenshot showing how to track job status using job ID 48" src="./figs/track-job-status.png"/>
 
 <h2>Points of Interest</h2>
 <ul>
-    <li>currently some common code is duplicated in next.js-app and worker projects : FFMPEG_QUEUE , QueueJobType and also the connection info (connection in worker and connectionOptions in next.js app). I have tried to use common folder so each project will import from. This was working ok using worker via but not using next.js . seems that putting the shared code in a package and import it will solve this but it seem too complicated for this repo. This is probably the right solution for production repo</li>
-    <li>when you get error : connect ECONNREFUSED 127.0.0.1:6379 its because the redis server is not running. doing sudo systemctl status redis fix it</li>
-   <li>many task appears as completd but i do not see them reaching the worker - no console.log  : it seems that bullmq is spawning more worker on top of the first because altough all tasks a remarked as completed or failed not all of them appear in the console as shown in this image (job id 27,28 are added to the queue but the first worker does not process them. he does process job id 26)
+    <li>Currently some common code is duplicated in Next.js app and worker projects : FFMPEG_QUEUE , QueueJobType , and also the connection info (connection in worker and connectionOptions in next.js app). I have tried to use common folder so each project will import from it. This was working ok using worker using <a href='#ref2'>[2]</a> but not using next.js . It seems that putting the shared code in a package and import it will solve this but it seem too complicated for this repo. This is probably the right solution for production repo</li>
+    <li>When you get the error : 'connect ECONNREFUSED 127.0.0.1:6379' its because the Redis server is not running. doing sudo systemctl status redis fix it</li>
+   <li>Many tasks appears as completed but I do not see them reaching the worker (no console.log) it seems that BullMQ is spawning more workers on top of the first because although all tasks are marked as completed or failed not all of them appear in the console as shown in this image (job  IDs 27,28 are added to the queue but the first worker does not process them. it does process job id 26)
 
 <img alt="Screenshot showing multiple worker instances and some jobs not appearing in console logs" src="./figs/few-workers.png"/>
-   
-   You can investigate this by using winston logger in the worker and possibly write also the worker id
+
+   You can investigate this by using a Winston logger in the worker and possibly write also the worker ID
    </li>
-   <li>using npm start i am able to add task and process by worker but it is not updated in jobs status i.e. not completed \ failed even when i refresh the page ===> the problem was the QueueStatus component which is server component thus render once even if the page is re-render. to fix this i added export const dynamic = 'force-dynamic';
-   in the hosting page. This directive tell not to use output server component cache and re-render it thus frwsh info is used</li>
+   <li>Using <code>npm start</code> I am able to add tasks and process them by the worker but it is not updated in jobs status (i.e., not 'completed' or 'failed')  even when I refresh the page. The problem was that the QueueStatus component, being a server component, renders only once even if the page is re-rendered. To fix this i added <code>export const dynamic = 'force-dynamic'</code>
+   to the hosting page. This directive tells Next.js not to use output server component caching and to re-render it, thus fresh info is used.</li>
 </ul>
 
 <h2>References</h2>
 <ul>
-    <li>...</li>
-   
+    <li id='ref1'><a href='https://bullmq.io/'>BullMQ home page</a></li>
+   <li id='ref2'><a href='https://www.youtube.com/watch?v=BhWFy7orx-M'> Share code between react client and express server </a></li>
 </ul>
 
