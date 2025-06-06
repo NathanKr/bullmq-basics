@@ -102,7 +102,7 @@ Interpreting `sudo systemctl status redis-server` Output:
 </ul>
 
 The result i got is shown here
-<img src='./figs/redis-status.png'/>
+<img alt="Screenshot of Redis server status in the terminal using systemctl command" src="./figs/redis-status.png"/>
 
 <h4>important note about redis on wsl</h4>
 If you close your WSL terminal, the Redis server running inside that WSL distribution will stop unless you've configured it to run as a background service that persists beyond terminal closure.
@@ -173,7 +173,7 @@ pnpm start
 <p>Ensure your Redis instance is running and accessible.</p>
 Following the installation, you need the Linux environment to be running because the redis server is installed there
 
-<img src='./figs/linux.png'/>
+<img alt="Screenshot showing the WSL Linux environment status indicating Redis is running" src="./figs/linux.png"/>
 
 <h4>Start worker</h4>
 <p>Launch your worker process(es) that will consume tasks from the queue.</p>
@@ -245,7 +245,7 @@ Three components
 
 The schema appears in this image
 
-<img src='./figs/architecture.jpg'/>
+<img alt="Diagram showing architecture: Next.js server, BullMQ queue, Node.js worker" src="./figs/architecture.jpg"/>
 
 <h2>Design considerations</h2>
 
@@ -357,17 +357,15 @@ function getQueueInfo(): Promise<QueueInfo> {
 <h2>Demo</h2>
 
 Home page is shown in the following image
-<img src='./figs/home-page.png'/>
-
+<img alt="Home page of the application" src="./figs/home-page.png"/>
 
 Click on add task button will add task to the queue , notice the job id - 48
 
-<img src='./figs/send-mail-add-task.png'/>
-
+<img alt="Screenshot showing adding a task to the queue, with job ID 48" src="./figs/send-mail-add-task.png"/>
 
 Given the created job id 48 - use it to track the job status
 
-<img src='./figs/track-job-status.png'/>
+<img alt="Screenshot showing how to track job status using job ID 48" src="./figs/track-job-status.png"/>
 
 <h2>Points of Interest</h2>
 <ul>
@@ -375,7 +373,7 @@ Given the created job id 48 - use it to track the job status
     <li>when you get error : connect ECONNREFUSED 127.0.0.1:6379 its because the redis server is not running. doing sudo systemctl status redis fix it</li>
    <li>many task appears as completd but i do not see them reaching the worker - no console.log  : it seems that bullmq is spawning more worker on top of the first because altough all tasks a remarked as completed or failed not all of them appear in the console as shown in this image (job id 27,28 are added to the queue but the first worker does not process them. he does process job id 26)
 
-   <img src='./figs/few-workers.png'/>
+<img alt="Screenshot showing multiple worker instances and some jobs not appearing in console logs" src="./figs/few-workers.png"/>
    
    You can investigate this by using winston logger in the worker and possibly write also the worker id
    </li>
