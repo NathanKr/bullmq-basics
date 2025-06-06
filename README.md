@@ -129,12 +129,34 @@ use the scripts in the repo root package.json to build and run the web server an
 
 <h4>Start the Redis server</h4>
 <p>Ensure your Redis instance is running and accessible.</p>
+following the installation you need the linux to run because the redis server is installed there
+
+<img src='./figs/linux.png'/>
 
 <h4>Start worker</h4>
 <p>Launch your worker process(es) that will consume tasks from the queue.</p>
 
+Simply invoke the index file under worker/src/logic
+
 <h4>Add task to queue</h4>
 <p>Enqueue new tasks from your application for workers to process.</p>
+
+call addTask function
+
+```ts
+
+ enum QueueJobType {
+  SendEmail = "sendEmail",
+  ProcessImage = "processImage",
+  GenerateReport = "generateReport",
+}
+
+function addTask(
+  jobName: QueueJobType,
+  data: any,
+  options?: JobsOptions // Use BullMQ's JobsOptions  type
+): Promise<{ jobId: string; jobName: string }> 
+```
 
 <h4>Task mark complete (success / failure)</h4>
 <p>Tasks are automatically marked as completed (successfully or with failure) by the queue system after processing.</p>
@@ -145,10 +167,64 @@ use the scripts in the repo root package.json to build and run the web server an
 </ul>
 <p>Once the outcome is determined, BullMQ updates the job's status in Redis (to <code>completed</code> or <code>failed</code>) and emits corresponding events for your application to react to.</p>
 
+<h4>get Task status</h4>
+
+
+call getJobStatus
+
+```ts
+export async function getJobStatus(jobId: string): Promise<JobStatus> {
+  if (!jobId) {
+    throw new Error("Job ID is required");
+  }
+
+  const job = await myQueue.getJob(jobId);
+
+  if (!job) {
+    return { status: "not-found", jobId: jobId };
+  }
+
+  const state = await job.getState();
+  const result = job.returnvalue;
+  const failedReason = job.failedReason;
+
+  return {
+    jobId: job.id,
+    status: state,
+    result: result,
+    failedReason: failedReason,
+    progress: job.progress,
+  };
+}
+
+```
 
 <h4>Get queue info</h4>
 <p>Monitor the state of your queue, including pending, active, and failed tasks, to ensure smooth operation.</p>
 
+call getQueueInfo
+
+```ts
+function getQueueInfo(): Promise<QueueInfo> {
+  const waitingCount = await myQueue.getWaitingCount();
+  const activeCount = await myQueue.getActiveCount();
+  const delayedCount = await myQueue.getDelayedCount();
+  const failedCount = await myQueue.getFailedCount();
+  const completedCount = await myQueue.getCompletedCount();
+
+  const totalQueueLength = waitingCount + activeCount + delayedCount;
+
+  return {
+    queueName: queueName,
+    waiting: waitingCount,
+    active: activeCount,
+    delayed: delayedCount,
+    failed: failedCount,
+    completed: completedCount,
+    totalQueueLength: totalQueueLength,
+  };
+}
+```
 
 <h2>Technologies Used</h2>
 <ul>
@@ -166,19 +242,22 @@ Three components
 - worker process (node.js app) , this is the queue task consumer
 - message queue (bullmq)
 
-<h2>design</h2>
+<h2>Design considerations</h2>
 
-<h3>how to poll for complate</h3>
-- useEffect + interval
-- react query
-- other
+<h3>How to poll for task status</h3>
+<ul>
+  <li><code>useEffect</code> + <code>setInterval</code></li>
+  <li>React Query</li>
+  <li>Web Socket</li>
+</ul>
 
-<h3>how to get complete and progress</h3>
+
+For most standard polling scenarios, especially when you have a good control over the polling interval and termination,  React Query (TanStack Query) is highly recommend. It offers a fantastic developer experience, handles many common pitfalls, and provides powerful features for managing server state. It's an industry standard for a reason.
+
+<h3>How to get complete and progress</h3>
 
 
-<h3>show info on queue - task now (api \ dashboard)</h3>
-
-<h3>how to configure bullmq to allow only one task executing</h3>
+<h3>Show info on queue - task now (api \ dashboard)</h3>
 
 
 <h2>Code Structure</h2>

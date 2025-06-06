@@ -74,19 +74,12 @@ export async function addTask(
 
 export async function getJobStatus(jobId: string): Promise<JobStatus> {
   if (!jobId) {
-    // Still good to validate input early
-    // You could throw here, or just return an error like this
-    // For "fail fast", you'd often throw:
     throw new Error("Job ID is required");
   }
 
-  // If getJob or getState throws an error, it will now directly bubble up
-  // to the caller (your client-side useQuery hook).
   const job = await myQueue.getJob(jobId);
 
   if (!job) {
-    // If the job doesn't exist, you still need to handle this explicitly,
-    // as it's not an "error" but a valid "not found" state.
     return { status: "not-found", jobId: jobId };
   }
 

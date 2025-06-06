@@ -5,7 +5,7 @@ import {
   JOB_STATUS_POLL_SEC,
   REACT_QUERY_KEY_JOB_STATUS,
 } from "@/logic/constants";
-import { JobStatus } from "@/types/types"; // Make sure your JobStatus type is correctly defined here
+import { JobStatus } from "@/types/types"; 
 import { Alert, Box, CircularProgress, Typography } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 
@@ -56,7 +56,6 @@ export default function JobStatusPoller({ jobId }: { jobId: string }) {
   if (isError) {
     return (
       <Alert severity="error" sx={{ my: 2 }}>
-        {/* Added vertical margin for spacing */}
         Error: {error?.message}
       </Alert>
     );

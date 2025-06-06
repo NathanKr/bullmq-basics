@@ -82,15 +82,3 @@ myWorker.on("error", (err: Error) => {
   console.error("Worker error:", err);
 });
 
-// // --- Graceful Shutdown --- todo nath ===>how important is this
-// const shutdown = async () => {
-//   console.log("Shutting down worker...");
-//   await myWorker.close(); // Tells the worker to stop accepting new jobs and finish current ones
-//   console.log("Worker closed. Exiting process.");
-//   process.exit(0); // Exit cleanly
-// };
-
-// // Listen for termination signals
-// process.on("SIGTERM", shutdown); // For systemd, Kubernetes, etc.
-// process.on("SIGINT", shutdown); // For Ctrl+C
-// process.on("SIGHUP", shutdown); // For terminal hangup
