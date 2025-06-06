@@ -172,6 +172,7 @@ pnpm start
 
 
 <h3>Bullmq important operations</h3>
+<p>This section outlines the essential operations required to manage and interact with your BullMQ-based queue system, from starting necessary services to handling tasks.</p>
 
 <h4>Start the Redis server</h4>
 <p>Ensure your Redis instance is running and accessible.</p>
@@ -252,6 +253,7 @@ The schema appears in this image
 <img alt="Diagram showing architecture: Next.js server, BullMQ queue, Node.js worker" src="./figs/architecture.jpg"/>
 
 <h2>Design considerations</h2>
+<p>When implementing a system that relies on background tasks, several design choices become crucial. This section explores key considerations, particularly around how to effectively track and manage the status of your tasks.</p>
 
 <h3>How to poll for task status</h3>
 <ul>
@@ -265,6 +267,8 @@ For most standard polling scenarios, especially when you have good control over 
 
 
 <h2>Code Structure</h2>
+
+<p>This section provides a brief overview of key functions and how the BullMQ queue and related operations are set up within the project's codebase.</p>
 
 <h3>Create myQueue</h3>
 
@@ -356,6 +360,8 @@ function getQueueInfo(): Promise<QueueInfo> {
 ```
 
 <h2>Demo</h2>
+
+<p>This section provides a visual walkthrough of the application's key functionalities, demonstrating how tasks are added to the queue and their status is tracked.</p>
 
 The home page is shown in the following image
 <img alt="Home page of the application" src="./figs/home-page.png"/>
