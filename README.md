@@ -7,16 +7,16 @@ Bullmq basics
 This project demonstrates how to offload long-running tasks like FFmpeg operations from a Next.js web server to a BullMQ message queue and a dedicated worker process to improve server responsiveness and scalability
 
 <h2>My Motivation</h2>
-you have your next.js app deployed on digital ocean droplt (4gb ram , 2 cores). you have it perform ffmpeg operations on the server and it may last few minutes. ffmpeg is heavy cpu usage so other client trying to access the server might fail because the process is busy with ffmpeg , what is the solution ?
+You have your Next.js app deployed on a DigitalOcean droplet (4GB RAM, 2 cores). You have it perform FFmpeg operations on the server, which may last a few minutes. FFmpeg is CPU-intensive, so other clients trying to access the server might fail because the process is busy with FFmpeg.
 
-The solution is adding to the web server message queue and worker process to handle the long tasks
+To address this, we offload long-running tasks to a message queue (BullMQ) and process them in a separate worker. This prevents the main server from getting blocked.
 
-Bullmq is popular message queue for node.js applications
+BullMQ is a popular message queue library for Node.js applications.
 
-BTW, this is a problem i have in my new saas applicastion post2video
+This challenge came up in my new SaaS project, Post2Video — where we generate videos using FFmpeg from blog and readme content
 
 <h2>Installation</h2>
-intall dependencies packages using
+Install dependency packages using
 
 ```bash
  pnpm i
@@ -24,7 +24,7 @@ intall dependencies packages using
 
 <h3>redis on wsl</h3>
 
-<p>This is by far the <strong>best and most recommended way</strong> to run Redis (and many other Linux-based tools) on Windows for development. WSL 2 provides a full Linux kernel and environment, offering excellent performance and compatibility.</p>
+<p>This is by far the <strong>most recommended way</strong> to run Redis (and many other Linux-based tools) on Windows for development. WSL 2 provides a full Linux kernel and environment, offering excellent performance and compatibility.</p>
 
 <h3>How to do it:</h3>
 <ol>
@@ -105,7 +105,7 @@ The result i got is shown here
 <img src='./figs/redis-status.png'/>
 
 <h4>important note about redis on wsl</h4>
-if you close your WSL terminal, the Redis server running inside that WSL distribution will stop unless you've configured it to run as a background service that persists beyond terminal closure.
+If you close your WSL terminal, the Redis server running inside that WSL distribution will stop unless you've configured it to run as a background service that persists beyond terminal closure.
 
 <h4>env variables</h4>
 The IP address or hostname of your Redis server. For local development, this is often 127.0.0.1 (localhost).
@@ -171,7 +171,7 @@ pnpm start
 
 <h4>Start the Redis server</h4>
 <p>Ensure your Redis instance is running and accessible.</p>
-following the installation you need the linux to run because the redis server is installed there
+Following the installation, you need the Linux environment to be running because the redis server is installed there
 
 <img src='./figs/linux.png'/>
 
@@ -257,7 +257,7 @@ The schema appears in this image
 </ul>
 
 
-For most standard polling scenarios, especially when you have a good control over the polling interval and termination,  React Query (TanStack Query) is highly recommend. It offers a fantastic developer experience, handles many common pitfalls, and provides powerful features for managing server state. It's an industry standard for a reason.
+For most standard polling scenarios, especially when you have good control over the polling interval and termination,  React Query (TanStack Query) is highly recommend. It offers a fantastic developer experience, handles many common pitfalls, and provides powerful features for managing server state. It's an industry standard for a reason.
 
 <h3>How to get complete and progress</h3>
 
