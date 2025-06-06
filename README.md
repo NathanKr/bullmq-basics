@@ -1,16 +1,26 @@
 <h1>Project Name</h1>
-....
+Bullmq basics
 
 
 
 <h2>Project Description</h2>
-....
+This project demonstrates how to offload long-running tasks like FFmpeg operations from a Next.js web server to a BullMQ message queue and a dedicated worker process to improve server responsiveness and scalability
 
-<h2>Motivation</h2>
-....
+<h2>My Motivation</h2>
+you have your next.js app deployed on digital ocean droplt (4gb ram , 2 cores). you have it perform ffmpeg operations on the server and it may last few minutes. ffmpeg is heavy cpu usage so other client trying to access the server might fail because the process is busy with ffmpeg , what is the solution ?
+
+The solution is adding to the web server message queue and worker process to handle the long tasks
+
+Bullmq is popular message queue for node.js applications
+
+BTW, this is a problem i have in my new saas applicastion post2video
 
 <h2>Installation</h2>
-packages - npm run dev
+intall dependencies packages using
+
+```bash
+ pnpm i
+ ```
 
 <h3>redis on wsl</h3>
 
@@ -201,6 +211,10 @@ Three components
 - worker process (node.js app) , this is the queue task consumer
 - message queue (bullmq)
 
+The schema appears in this image
+
+<img src='./figs/architecture.jpg'/>
+
 <h2>Design considerations</h2>
 
 <h3>How to poll for task status</h3>
@@ -216,10 +230,25 @@ For most standard polling scenarios, especially when you have a good control ove
 <h3>How to get complete and progress</h3>
 
 
-<h3>Show info on queue - task now (api \ dashboard)</h3>
-
 
 <h2>Code Structure</h2>
+
+<h3>Create myQueue</h3>
+
+```ts
+
+const connectionOptions = {
+  host: process.env.REDIS_HOST,
+  port: parseInt(process.env.REDIS_PORT, 10),
+  password: process.env.REDIS_PASSWORD,
+  tls: process.env.REDIS_TLS_ENABLED === "true" ? {} : undefined,
+};
+
+const queueName = FFMPEG_QUEUE;
+
+const myQueue = new Queue(queueName, { connection: connectionOptions });
+
+```
 
 <h3>function addTask</h3>
 
@@ -295,9 +324,18 @@ function getQueueInfo(): Promise<QueueInfo> {
 
 <h2>Demo</h2>
 
-home page is shown in the following image
+Home page is shown in the following image
 <img src='./figs/home-page.png'/>
 
+
+Click on add task button will add task to the queue , notice the job id - 48
+
+<img src='./figs/send-mail-add-task.png'/>
+
+
+Given the created job id 48 - use it to track the job status
+
+<img src='./figs/track-job-status.png'/>
 
 <h2>Points of Interest</h2>
 <ul>
