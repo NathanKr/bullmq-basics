@@ -57,19 +57,13 @@ export async function addTask(
   data: any,
   options?: JobsOptions // Use BullMQ's JobsOptions  type
 ): Promise<{ jobId: string; jobName: string }> {
-  try {
-    const job = await myQueue.add(jobName, data, options);
+  const job = await myQueue.add(jobName, data, options);
 
-    // BullMQ guarantees job.id and job.name are set after a successful add
-    console.log(
-      `[BullMQ] Added job: ID ${job.id}, Name: ${job.name}, Type: ${jobName}`
-    );
-    return { jobId: job.id!, jobName: job.name };
-  } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : String(error);
-    console.error(`[BullMQ] Error adding job '${jobName}':`, errorMessage);
-    throw new Error(`Failed to add job '${jobName}': ${errorMessage}`);
-  }
+  // BullMQ guarantees job.id and job.name are set after a successful add
+  console.log(
+    `[BullMQ] Added job: ID ${job.id}, Name: ${job.name}, Type: ${jobName}`
+  );
+  return { jobId: job.id!, jobName: job.name };
 }
 
 export async function getJobStatus(jobId: string): Promise<JobStatus> {

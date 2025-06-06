@@ -144,7 +144,6 @@ Simply invoke the index file under worker/src/logic
 call addTask function
 
 ```ts
-
  enum QueueJobType {
   SendEmail = "sendEmail",
   ProcessImage = "processImage",
@@ -173,30 +172,7 @@ function addTask(
 call getJobStatus
 
 ```ts
-export async function getJobStatus(jobId: string): Promise<JobStatus> {
-  if (!jobId) {
-    throw new Error("Job ID is required");
-  }
-
-  const job = await myQueue.getJob(jobId);
-
-  if (!job) {
-    return { status: "not-found", jobId: jobId };
-  }
-
-  const state = await job.getState();
-  const result = job.returnvalue;
-  const failedReason = job.failedReason;
-
-  return {
-    jobId: job.id,
-    status: state,
-    result: result,
-    failedReason: failedReason,
-    progress: job.progress,
-  };
-}
-
+function getJobStatus(jobId: string): Promise<JobStatus> 
 ```
 
 <h4>Get queue info</h4>
@@ -205,26 +181,9 @@ export async function getJobStatus(jobId: string): Promise<JobStatus> {
 call getQueueInfo
 
 ```ts
-function getQueueInfo(): Promise<QueueInfo> {
-  const waitingCount = await myQueue.getWaitingCount();
-  const activeCount = await myQueue.getActiveCount();
-  const delayedCount = await myQueue.getDelayedCount();
-  const failedCount = await myQueue.getFailedCount();
-  const completedCount = await myQueue.getCompletedCount();
-
-  const totalQueueLength = waitingCount + activeCount + delayedCount;
-
-  return {
-    queueName: queueName,
-    waiting: waitingCount,
-    active: activeCount,
-    delayed: delayedCount,
-    failed: failedCount,
-    completed: completedCount,
-    totalQueueLength: totalQueueLength,
-  };
-}
+function getQueueInfo(): Promise<QueueInfo> 
 ```
+
 
 <h2>Technologies Used</h2>
 <ul>
@@ -261,10 +220,83 @@ For most standard polling scenarios, especially when you have a good control ove
 
 
 <h2>Code Structure</h2>
-....
+
+<h3>function addTask</h3>
+
+```ts
+export async function addTask(
+  jobName: QueueJobType,
+  data: any,
+  options?: JobsOptions // Use BullMQ's JobsOptions  type
+): Promise<{ jobId: string; jobName: string }> {
+  const job = await myQueue.add(jobName, data, options);
+
+  // BullMQ guarantees job.id and job.name are set after a successful add
+  console.log(
+    `[BullMQ] Added job: ID ${job.id}, Name: ${job.name}, Type: ${jobName}`
+  );
+  return { jobId: job.id!, jobName: job.name };
+}
+```
+
+<h3>function getJobStatus</h3>
+
+```ts
+export async function getJobStatus(jobId: string): Promise<JobStatus> {
+  if (!jobId) {
+    throw new Error("Job ID is required");
+  }
+
+  const job = await myQueue.getJob(jobId);
+
+  if (!job) {
+    return { status: "not-found", jobId: jobId };
+  }
+
+  const state = await job.getState();
+  const result = job.returnvalue;
+  const failedReason = job.failedReason;
+
+  return {
+    jobId: job.id,
+    status: state,
+    result: result,
+    failedReason: failedReason,
+    progress: job.progress,
+  };
+}
+
+```
+
+
+<h3>function getQueueInfo</h3>
+
+```ts
+function getQueueInfo(): Promise<QueueInfo> {
+  const waitingCount = await myQueue.getWaitingCount();
+  const activeCount = await myQueue.getActiveCount();
+  const delayedCount = await myQueue.getDelayedCount();
+  const failedCount = await myQueue.getFailedCount();
+  const completedCount = await myQueue.getCompletedCount();
+
+  const totalQueueLength = waitingCount + activeCount + delayedCount;
+
+  return {
+    queueName: queueName,
+    waiting: waitingCount,
+    active: activeCount,
+    delayed: delayedCount,
+    failed: failedCount,
+    completed: completedCount,
+    totalQueueLength: totalQueueLength,
+  };
+}
+```
 
 <h2>Demo</h2>
-....
+
+home page is shown in the following image
+<img src='./figs/home-page.png'/>
 
 
 <h2>Points of Interest</h2>
