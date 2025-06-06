@@ -133,7 +133,39 @@ REDIS_TLS_ENABLED=false
 ```
 
 <h2>Usage</h2>
-use the scripts in the repo root package.json to build and run the web server and worker in one go from the repo folder via the package concurrently. this make your developer experience much smotther
+
+<p>
+  To streamline your <strong>development experience</strong>, you can run both the web server and worker processes concurrently using the <code>dev</code> script defined in the root <code>package.json</code>:
+</p>
+
+```bash
+pnpm run dev
+```
+
+<hr>
+
+<p>
+  For <strong>production deployment</strong> or to run the application in a production-like environment, you'll typically build the Next.js application and then start it:
+</p>
+
+<h3>Build the Application</h3>
+<p>
+  This command compiles your Next.js application for production:
+</p>
+
+```bash
+pnpm run build
+```
+
+<h3>Start the Application</h3>
+<p>
+  After building, this command will start the Next.js server and, if your <code>start</code> script is configured to also launch the worker (which is a good practice for production), it will also start the worker process:
+</p>
+
+```bash
+pnpm start
+```
+
 
 <h3>Bullmq important operations</h3>
 
